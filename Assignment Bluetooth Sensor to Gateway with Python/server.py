@@ -1,7 +1,7 @@
 import socket
 
 server = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
-server.bind(("XX:XX:XX:XX:XX:XX", 4))
+server.bind(("7C:FA:80:F2:03:3F", 4))
 server.listen(1)
 
 print("Waiting for Bluetooth client connection...")
