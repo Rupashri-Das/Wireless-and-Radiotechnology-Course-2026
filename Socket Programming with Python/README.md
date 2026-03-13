@@ -36,14 +36,14 @@ You will see output like:
 
 Server is listening on port 8000
 
-2. Client (Client PC)
+### 2. Client (Client PC) 
 
 Open a terminal or command prompt.
 
 Navigate to the folder containing client.py.
 
 Update the server_ip in client.py to the server PC's IP address:
-server_ip = "192.168.1.45"  # replace with server PC's actual IP
+server_ip = "10.183.168.41"  # replace with server PC's actual IP
 
 Run the client:
 
