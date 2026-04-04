@@ -1,4 +1,4 @@
-# Exercise 2 — Beam Solid Angle of an Antenna
+# Beam Solid Angle of an Antenna
 
 **Course:** Wireless and Radio Technology 2026  
 
