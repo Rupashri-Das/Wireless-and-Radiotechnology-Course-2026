@@ -2,95 +2,62 @@ clc;
 close all;
 clear all;
 
-%% ============================================================
-%  THERMAL NOISE GENERATION AND ANALYSIS
-%  Course: Wireless and Radio Technology 2026
-%% ============================================================
-
 % ---- PARAMETERS ----
-B = 1e6;        % Bandwidth = 1 MHz
-R = 100;        % Resistance = 100 ohms
-T = 300;        % Temperature = 300 K (room temperature)
-k = 1.38e-23;   % Boltzmann's constant (J/K)
+B         = 1e6;
+R         = 100;
+T         = 300;
+k         = 1.38e-23;
+n_samples = 10000;
 
-% ---- DERIVED VALUES ----
-n_samples   = 10000;                          % number of noise samples
-time        = 0 : 1/B : (n_samples-1)/B;     % time vector (seconds)
-noise_power = 4 * k * T * R * B;             % theoretical noise power (W)
-noise_rms   = sqrt(noise_power);             % RMS voltage of noise
-
-% ---- GENERATE THERMAL NOISE ----
+% ---- GENERATE DATA ----
+time          = linspace(0, (n_samples-1)/B, n_samples);
 thermal_noise = sqrt(4 * k * T * R * B) * randn(1, n_samples);
 
-%% ============================================================
-%  FIGURE 1 — Time Domain Plot
-%% ============================================================
-figure(1);
-plot(time * 1e6, thermal_noise * 1e9);       % time in microseconds, noise in nanovolts
-xlabel('Time (\mus)', 'FontSize', 12);
-ylabel('Amplitude (nV)', 'FontSize', 12);
-title('Thermal Noise — Time Domain', 'FontSize', 14, 'FontWeight', 'bold');
+% ---- FFT FOR PSD (no toolbox needed) ----
+N    = n_samples;
+Y    = fft(thermal_noise);
+P    = (abs(Y).^2) / N;
+freq = linspace(0, B, N);
+
+% ---- ALL 3 PLOTS IN ONE FIGURE ----
+figure('Units','normalized','OuterPosition',[0 0 1 1]);
+
+% --- Plot 1: Time Domain ---
+subplot(3,1,1);
+plot(time * 1e6, thermal_noise * 1e9, 'b');
+xlabel('Time (\mus)');
+ylabel('Amplitude (nV)');
+title('Thermal Noise — Time Domain');
 grid on;
 
-%% ============================================================
-%  FIGURE 2 — Power Spectral Density (PSD)
-%% ============================================================
-figure(2);
-[psd, freq] = pwelch(thermal_noise, [], [], [], B);
-semilogx(freq, 10*log10(psd), 'b', 'LineWidth', 1.5);
-xlabel('Frequency (Hz)', 'FontSize', 12);
-ylabel('Power/Frequency (dB/Hz)', 'FontSize', 12);
-title('Power Spectral Density of Thermal Noise', 'FontSize', 14, 'FontWeight', 'bold');
+% --- Plot 2: PSD ---
+subplot(3,1,2);
+plot(freq(1:N/2)/1e3, 10*log10(P(1:N/2)), 'r');
+xlabel('Frequency (kHz)');
+ylabel('Power (dB)');
+title('Power Spectral Density');
 grid on;
 
-%% ============================================================
-%  FIGURE 3 — Histogram of Noise Amplitude (Gaussian Check)
-%% ============================================================
-figure(3);
-histogram(thermal_noise, 100, 'Normalization', 'pdf', 'FaceColor', 'cyan', 'EdgeColor', 'none');
-xlabel('Amplitude (V)', 'FontSize', 12);
-ylabel('Probability Density', 'FontSize', 12);
-title('Amplitude Distribution of Thermal Noise (Gaussian)', 'FontSize', 14, 'FontWeight', 'bold');
+% --- Plot 3: Histogram ---
+subplot(3,1,3);
+histogram(thermal_noise, 100, 'FaceColor', 'cyan', 'EdgeColor', 'none');
+xlabel('Amplitude (V)');
+ylabel('Count');
+title('Amplitude Distribution (Gaussian)');
 grid on;
 
-%% ============================================================
-%  PRINT RESULTS TO COMMAND WINDOW
-%% ============================================================
-fprintf('\n========================================');
-fprintf('\n   THERMAL NOISE ANALYSIS RESULTS');
-fprintf('\n========================================');
-fprintf('\n Input Parameters:');
-fprintf('\n --------------------');
-fprintf('\n Bandwidth         B = %.2e Hz', B);
-fprintf('\n Resistance        R = %d Ohms', R);
-fprintf('\n Temperature       T = %d K', T);
-fprintf('\n Number of Samples   = %d', n_samples);
-fprintf('\n');
-fprintf('\n Output Parameters:');
-fprintf('\n --------------------');
-fprintf('\n Theoretical Noise Power (V^2) = %.4e W', noise_power);
-fprintf('\n Theoretical Noise RMS (V)     = %.4e V', noise_rms);
-fprintf('\n Simulated Noise Mean (V)      = %.4e V', mean(thermal_noise));
-fprintf('\n Simulated Noise Std Dev (V)   = %.4e V', std(thermal_noise));
-fprintf('\n Simulated Noise Power (V^2)   = %.4e W', mean(thermal_noise.^2));
+% ---- Force render ----
+drawnow;
+pause(1);
+
+% ---- PRINT RESULTS ----
 fprintf('\n========================================\n');
-
-%% ============================================================
-%  EXPERIMENTATION — Effect of Temperature
-%  Uncomment this section to compare different temperatures
-%% ============================================================
-% figure(4);
-% temperatures = [200, 300, 400, 500];
-% hold on;
-% for i = 1:length(temperatures)
-%     noise_temp = sqrt(4 * k * temperatures(i) * R * B) * randn(1, n_samples);
-%     [psd_temp, freq_temp] = pwelch(noise_temp, [], [], [], B);
-%     semilogx(freq_temp, 10*log10(psd_temp), 'LineWidth', 1.5, ...
-%              'DisplayName', ['T = ' num2str(temperatures(i)) ' K']);
-% end
-% hold off;
-% legend('show');
-% xlabel('Frequency (Hz)');
-% ylabel('PSD (dB/Hz)');
-% title('PSD at Different Temperatures');
-% grid on;
+fprintf('   THERMAL NOISE ANALYSIS RESULTS\n');
+fprintf('========================================\n');
+fprintf(' Bandwidth          B = %.2e Hz\n', B);
+fprintf(' Resistance         R = %d Ohms\n', R);
+fprintf(' Temperature        T = %d K\n', T);
+fprintf(' Theoretical RMS      = %.4e V\n', sqrt(4*k*T*R*B));
+fprintf(' Simulated RMS        = %.4e V\n', std(thermal_noise));
+fprintf(' Simulated Mean       = %.4e V\n', mean(thermal_noise));
+fprintf('========================================\n');
