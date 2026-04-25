@@ -2,10 +2,9 @@ import socket
 import time
 import random
 
-# ── Configuration ──────────────────────────────────────────────
+# Configuration 
 HOST = "127.0.0.1"   # localhost
 PORT = 5005
-# ───────────────────────────────────────────────────────────────
 
 def generate_temperature():
     """Simulate a temperature sensor reading."""
