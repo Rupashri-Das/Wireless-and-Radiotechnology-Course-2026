@@ -7,19 +7,21 @@ setup using localhost. A Python sensor script sends simulated temperature data o
 a TCP socket to an edge device script, which forwards it to a public MQTT broker.
 Grafana subscribes to the MQTT topic and displays the values in a real-time dashboard.
 
+```
 socket_sensor.py  (Laptop 1 / simulated sensor)
-│
-│  TCP Socket — localhost:5005
-▼
+      │
+      │  TCP Socket — localhost:5005
+      ▼
 edge_device.py  (Laptop 2 / simulated edge device — same machine)
-│
-│  MQTT Publish
-▼
+      │
+      │  MQTT Publish
+      ▼
 broker.emqx.io (public MQTT broker)
-│
-│  MQTT Subscribe
-▼
+      │
+      │  MQTT Subscribe
+      ▼
 Grafana Dashboard  (localhost:3000)
+```
 
 ---
 
