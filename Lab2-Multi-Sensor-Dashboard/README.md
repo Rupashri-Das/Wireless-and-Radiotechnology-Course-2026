@@ -102,7 +102,6 @@ python socket_sensor.py
 
 ```
 ![Multi-Sensor Dashboard](dashboard_screenshot.png)
-
 ```
 ---
 
