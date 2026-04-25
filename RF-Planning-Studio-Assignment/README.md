@@ -7,7 +7,7 @@ Evaluate how design parameters affect wireless link performance.
 
 ## Results
 
-![Plot](results.png)
+![Plot](rf_planning_figure.png)
 
 
 ---
