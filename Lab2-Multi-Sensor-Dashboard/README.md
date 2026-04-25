@@ -100,9 +100,8 @@ python socket_sensor.py
 
 ## Grafana Dashboard Screenshot
 
-```
 ![Multi-Sensor Dashboard](dashboard_screenshot.png)
-```
+
 ---
 
 ## Reflection — Why Separate MQTT Topics per Sensor?
