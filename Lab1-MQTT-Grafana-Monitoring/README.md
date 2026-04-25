@@ -130,9 +130,8 @@ Click **Save & Test** — you should see a green success message.
 > X-axis shows the last 5 minutes of data. Values update every 2 seconds.)*
 
 
-```markdown
 ![Grafana Dashboard](dashboard_screenshot.png)
-```
+
 
 ## What Is Shown in the Panel
 
