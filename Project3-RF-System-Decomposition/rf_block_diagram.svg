@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="580" viewBox="0 0 700 580" style="font-family:Arial,sans-serif;background:#ffffff">
+
+  <!-- Title -->
+  <text x="350" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1a1a">Nordic nRF52840 — RF System Block Diagram</text>
+
+  <!-- SoC boundary -->
+  <rect x="55" y="35" width="440" height="320" rx="14" fill="none" stroke="#888" stroke-width="1.2" stroke-dasharray="7 4"/>
+  <text x="70" y="31" font-size="11" fill="#888">Nordic nRF52840 SoC</text>
+
+  <!-- Power Supply block -->
+  <rect x="530" y="45" width="130" height="145" rx="10" fill="#FFF3CC" stroke="#BA7517" stroke-width="1"/>
+  <text x="595" y="70" text-anchor="middle" font-size="12" font-weight="bold" fill="#633806">Power supply</text>
+  <text x="595" y="90" text-anchor="middle" font-size="10" fill="#854F0B">DCDC converter</text>
+  <text x="595" y="107" text-anchor="middle" font-size="10" fill="#854F0B">LDO for RF</text>
+  <text x="595" y="124" text-anchor="middle" font-size="10" fill="#854F0B">1.8 V / 3.3 V rails</text>
+  <!-- Arrow: power supply → SoC -->
+  <line x1="530" y1="117" x2="497" y2="117" stroke="#BA7517" stroke-width="1.3" marker-end="url(#arrowAmber)"/>
+  <text x="512" y="112" text-anchor="middle" font-size="9" fill="#BA7517">power</text>
+
+  <!-- MCU block -->
+  <rect x="75" y="55" width="400" height="64" rx="9" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+  <text x="275" y="78" text-anchor="middle" font-size="12" font-weight="bold" fill="#26215C">1. MCU / Information source</text>
+  <text x="275" y="97" text-anchor="middle" font-size="10" fill="#3C3489">ARM Cortex-M4F · 64 MHz · BLE 5 protocol stack · application processor</text>
+
+  <!-- RF transceiver inner boundary -->
+  <rect x="68" y="150" width="416" height="168" rx="9" fill="none" stroke="#aaa" stroke-width="0.8" stroke-dasharray="4 3"/>
+  <text x="80" y="146" font-size="10" fill="#aaa">3. Modulation/Demodulation   4. PA   5. LNA   (RF transceiver subsystem)</text>
+
+  <!-- Modulator block -->
+  <rect x="80" y="160" width="178" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+  <text x="169" y="182" text-anchor="middle" font-size="11" font-weight="bold" fill="#04342C">3. Modulator</text>
+  <text x="169" y="200" text-anchor="middle" font-size="10" fill="#085041">GFSK / O-QPSK · 1 Mbps</text>
+
+  <!-- Demodulator block -->
+  <rect x="277" y="160" width="178" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+  <text x="366" y="182" text-anchor="middle" font-size="11" font-weight="bold" fill="#04342C">3. Demodulator</text>
+  <text x="366" y="200" text-anchor="middle" font-size="10" fill="#085041">GFSK / O-QPSK · 1 Mbps</text>
+
+  <!-- PA block -->
+  <rect x="80" y="252" width="178" height="56" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="1"/>
+  <text x="169" y="274" text-anchor="middle" font-size="11" font-weight="bold" fill="#4A1B0C">4. Power amplifier (PA)</text>
+  <text x="169" y="292" text-anchor="middle" font-size="10" fill="#712B13">−20 to +8 dBm output</text>
+
+  <!-- LNA block -->
+  <rect x="277" y="252" width="178" height="56" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="1"/>
+  <text x="366" y="274" text-anchor="middle" font-size="11" font-weight="bold" fill="#4A1B0C">5. Low noise amplifier</text>
+  <text x="366" y="292" text-anchor="middle" font-size="10" fill="#712B13">Rx front end · −95 dBm sens.</text>
+
+  <!-- Balun + Matching block -->
+  <rect x="150" y="395" width="218" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+  <text x="259" y="416" text-anchor="middle" font-size="11" font-weight="bold" fill="#042C53">6. Balun + matching network</text>
+  <text x="259" y="434" text-anchor="middle" font-size="10" fill="#0C447C">50 Ω · differential → single-ended</text>
+
+  <!-- Antenna block -->
+  <rect x="215" y="483" width="118" height="52" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="1"/>
+  <text x="274" y="504" text-anchor="middle" font-size="11" font-weight="bold" fill="#2C2C2A">7. Antenna</text>
+  <text x="274" y="522" text-anchor="middle" font-size="10" fill="#444441">2.4 GHz RF port</text>
+
+  <!-- TX PATH ARROWS (coral/red) -->
+  <!-- MCU → Modulator -->
+  <line x1="169" y1="119" x2="169" y2="160" stroke="#D85A30" stroke-width="1.4" marker-end="url(#arrowTX)"/>
+  <!-- Modulator → PA -->
+  <line x1="169" y1="216" x2="169" y2="252" stroke="#D85A30" stroke-width="1.4" marker-end="url(#arrowTX)"/>
+  <!-- PA → Balun (L-shape) -->
+  <polyline points="169,308 169,360 200,360 200,395" fill="none" stroke="#D85A30" stroke-width="1.4" marker-end="url(#arrowTX)"/>
+
+  <!-- RX PATH ARROWS (teal/green) -->
+  <!-- Demod → MCU -->
+  <line x1="366" y1="160" x2="366" y2="119" stroke="#0F6E56" stroke-width="1.4" marker-end="url(#arrowRX)"/>
+  <!-- LNA → Demod -->
+  <line x1="366" y1="252" x2="366" y2="216" stroke="#0F6E56" stroke-width="1.4" marker-end="url(#arrowRX)"/>
+  <!-- Balun → LNA (L-shape) -->
+  <polyline points="318,395 318,360 366,360 366,308" fill="none" stroke="#0F6E56" stroke-width="1.4" marker-end="url(#arrowRX)"/>
+
+  <!-- Balun ↔ Antenna -->
+  <polyline points="259,451 259,473 274,473 274,483" fill="none" stroke="#5F5E5A" stroke-width="1.4" marker-end="url(#arrowGray)"/>
+
+  <!-- TX / RX labels -->
+  <text x="135" y="143" font-size="10" font-weight="bold" fill="#D85A30">TX path →</text>
+  <text x="393" y="143" font-size="10" font-weight="bold" fill="#0F6E56">← RX path</text>
+
+  <!-- 2. RF Transceiver label (wraps entire subsystem) -->
+  <text x="275" y="355" text-anchor="middle" font-size="10" fill="#888">↑↓  2. RF Transceiver (TDD — TX and RX share the RF port)</text>
+
+  <!-- Legend -->
+  <rect x="55" y="548" width="12" height="10" rx="2" fill="#D85A30"/>
+  <text x="72" y="557" font-size="10" fill="#333">TX signal path</text>
+  <rect x="160" y="548" width="12" height="10" rx="2" fill="#0F6E56"/>
+  <text x="177" y="557" font-size="10" fill="#333">RX signal path</text>
+  <rect x="265" y="548" width="12" height="10" rx="2" fill="#FFF3CC" stroke="#BA7517"/>
+  <text x="282" y="557" font-size="10" fill="#333">Power supply</text>
+  <rect x="360" y="548" width="12" height="10" rx="2" fill="#F1EFE8" stroke="#5F5E5A"/>
+  <text x="377" y="557" font-size="10" fill="#333">External (off-chip)</text>
+
+  <!-- Arrow marker defs -->
+  <defs>
+    <marker id="arrowTX" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/>
+    </marker>
+    <marker id="arrowRX" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"/>
+    </marker>
+    <marker id="arrowGray" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round"/>
+    </marker>
+  </defs>
+</svg>
