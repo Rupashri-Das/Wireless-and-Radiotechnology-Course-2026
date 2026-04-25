@@ -129,16 +129,10 @@ Click **Save & Test** — you should see a green success message.
 > time-series panel. The Y-axis shows temperature in °C (range 18–35), the
 > X-axis shows the last 5 minutes of data. Values update every 2 seconds.)*
 
-**Note:** Replace this text with an actual screenshot of your Grafana panel
-after running the system. In GitHub, you can add an image like this:
 
 ```markdown
 ![Grafana Dashboard](dashboard_screenshot.png)
 ```
-
-Upload `dashboard_screenshot.png` to the same GitHub folder as this README.
-
----
 
 ## What Is Shown in the Panel
 
