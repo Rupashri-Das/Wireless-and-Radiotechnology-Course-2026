@@ -1,16 +1,16 @@
 import socket
 import paho.mqtt.client as mqtt
 
-# ── Socket Configuration (receive from sensor) ─────────────────
+# Socket Configuration (receive from sensor)
 LISTEN_HOST = "0.0.0.0"   # listen on all interfaces
 LISTEN_PORT = 5005
-# ── MQTT Configuration (publish to broker) ─────────────────────
+# MQTT Configuration (publish to broker) 
 MQTT_BROKER = "broker.emqx.io"
 MQTT_PORT   = 1883
 MQTT_TOPIC  = "savonia/iot/temperature"
-# ───────────────────────────────────────────────────────────────
 
-# ── MQTT callbacks ─────────────────────────────────────────────
+
+# MQTT callbacks 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print(f"[MQTT] Connected to broker: {MQTT_BROKER}")
@@ -20,14 +20,14 @@ def on_connect(client, userdata, flags, rc):
 def on_publish(client, userdata, mid):
     print(f"[MQTT] Message published (mid={mid})")
 
-# ── Set up MQTT client ─────────────────────────────────────────
+# Set up MQTT client
 mqtt_client = mqtt.Client(client_id="edge-device-01", protocol=mqtt.MQTTv311)
 mqtt_client.on_connect = on_connect
 mqtt_client.on_publish  = on_publish
 mqtt_client.connect(MQTT_BROKER, MQTT_PORT, keepalive=60)
 mqtt_client.loop_start()   # runs MQTT in background thread
 
-# ── Socket server: receive data from sensor ───────────────────
+# Socket server: receive data from sensor 
 def run_edge():
     print(f"[Edge] Listening for sensor on port {LISTEN_PORT} ...")
 
