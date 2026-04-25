@@ -1,7 +1,7 @@
 import socket
 import paho.mqtt.client as mqtt
 
-HOST = "0.0.0.0"
+HOST = "127.0.0.1"
 PORT = 5000
 
 broker = "broker.emqx.io"
@@ -14,10 +14,10 @@ server = socket.socket()
 server.bind((HOST, PORT))
 server.listen(1)
 
-print("Waiting for sensor...")
+print("Edge waiting for sensor...")
 
 conn, addr = server.accept()
-print("Connected:", addr)
+print("Sensor connected")
 
 while True:
     data = conn.recv(1024)
@@ -25,6 +25,6 @@ while True:
         break
 
     temperature = data.decode()
-    print("Received:", temperature)
+    print("Edge received:", temperature)
 
     mqtt_client.publish(topic, temperature)
