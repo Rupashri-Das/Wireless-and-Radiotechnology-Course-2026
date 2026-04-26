@@ -1,39 +1,54 @@
 import paho.mqtt.client as mqtt
 import requests
 
-broker = "broker.emqx.io"
-topic = "savonia/iot/temperature"
+# Configuration
+BROKER   = "broker.emqx.io"
+PORT     = 1883
+TOPIC    = "savonia/iot/temperature"
 
-TOKEN = "PASTE_YOUR_TOKEN"
-CHAT_ID = "PASTE_YOUR_CHAT_ID"
+TOKEN    = "8633117366:AAF1Kev3xt4Lu70hZM5PcVoFGFd_NqEYPyA"   # paste your token here
+CHAT_ID  = "8454572761"         # paste your chat ID here
 
-threshold = 28
+THRESHOLD = 28.0   # alert fires when temperature exceeds this
+
 
 def send_telegram(message):
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    url     = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    payload = {"chat_id": CHAT_ID, "text": message}
+    try:
+        response = requests.post(url, data=payload)
+        if response.status_code == 200:
+            print(f"[Telegram] Alert sent: {message}")
+        else:
+            print(f"[Telegram] Failed to send. Status: {response.status_code}")
+    except Exception as e:
+        print(f"[Telegram] Error: {e}")
 
-    payload = {
-        "chat_id": CHAT_ID,
-        "text": message
-    }
-
-    requests.post(url, data=payload)
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print(f"[MQTT] Connected to broker: {BROKER}")
+        client.subscribe(TOPIC)
+        print(f"[MQTT] Subscribed to topic: {TOPIC}")
+    else:
+        print(f"[MQTT] Connection failed, code: {rc}")
 
 def on_message(client, userdata, msg):
-    temperature = float(msg.payload.decode())
-    print("Cloud received:", temperature)
+    try:
+        temperature = float(msg.payload.decode().strip())
+        print(f"[Sensor] Temperature: {temperature} °C")
 
-    if temperature > threshold:
-        alert = f"ALERT: High temperature {temperature} °C"
-        print(alert)
-        send_telegram(alert)
+        if temperature > THRESHOLD:
+            alert = f"ALERT: High temperature detected!\nValue: {temperature} °C\nThreshold: {THRESHOLD} °C"
+            print(f"[Alert] {alert}")
+            send_telegram(alert)
+        else:
+            print(f"[Status] Temperature is normal ({temperature} °C)")
 
-client = mqtt.Client()
-client.connect(broker, 1883)
+    except ValueError:
+        print(f"[Error] Could not parse message: {msg.payload}")
 
-client.subscribe(topic)
+client = mqtt.Client(client_id="alert-subscriber-01", protocol=mqtt.MQTTv311)
+client.on_connect = on_connect
 client.on_message = on_message
-
-print("Cloud listening...")
-
+client.connect(BROKER, PORT, keepalive=60)
 client.loop_forever()
