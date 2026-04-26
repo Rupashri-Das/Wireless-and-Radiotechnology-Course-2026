@@ -6,8 +6,8 @@ BROKER   = "broker.emqx.io"
 PORT     = 1883
 TOPIC    = "savonia/iot/temperature"
 
-TOKEN    = "8633117366:AAF1Kev3xt4Lu70hZM5PcVoFGFd_NqEYPyA"   # paste your token here
-CHAT_ID  = "8454572761"         # paste your chat ID here
+TOKEN    = "YOUR_TELEGRAM_TOKEN"   # I removed my token after submitting the assignment due to privacy reasons
+CHAT_ID  = "YOUR_CHAT_ID"         # I removed my chat id after submitting the assignment due to privacy reasons
 
 THRESHOLD = 28.0   # alert fires when temperature exceeds this
 
